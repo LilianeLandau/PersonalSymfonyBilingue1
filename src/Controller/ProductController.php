@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Repository\ProductRepository;
-use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,22 +11,32 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     #[Route('/', name: 'home_redirect')]
-    public function redirectToLocale(Request $request): Response
+    public function redirectToLocale(): Response
     {
-        // Rediriger vers la page d'accueil avec la locale par défaut (fr)
-        return $this->redirectToRoute('product_index', ['_locale' => 'fr']);
+        // Redirige vers la page d'accueil avec "fr" par défaut
+        return $this->redirectToRoute('home', ['_locale' => 'fr']);
     }
 
-    // Afficher les produits sans utiliser {locale} dans l'URL (le préfixe est déjà géré par routes.yaml)
-    #[Route('/product', name: 'product_index')]
-    public function index(Request $request, ProductRepository $productRepository): Response
+    #[Route('/{_locale}/home', name: 'home', requirements: ['_locale' => 'fr|en'])]
+    public function home(Request $request): Response
+    {
+        // Récupérer la locale depuis la requête
+        $locale = $request->getLocale();
+
+        return $this->render('product/home.html.twig', [
+            'current_locale' => $locale
+        ]);
+    }
+
+    #[Route('/{_locale}/product', name: 'product_index', requirements: ['_locale' => 'fr|en'])]
+    public function index(ProductRepository $productRepository, Request $request): Response
     {
         $locale = $request->getLocale();
         $products = $productRepository->findAll();
 
         return $this->render('product/index.html.twig', [
             'products' => $products,
-            'locale' => $locale,
+            'current_locale' => $locale
         ]);
     }
 }

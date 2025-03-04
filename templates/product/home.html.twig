@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container text-center mt-5">
+		<div class="language-switcher mb-4">
+			<div class="d-flex justify-content-center gap-3">
+				<div class="text-center">
+					<a href="{{ path('product_index', {'_locale': 'fr'}) }}" class="text-decoration-none">
+						<img src="{{ asset('images/fr.png') }}" alt="Français (FR)" class="flag-icon">
+						<p class="mt-2">Produits en Français</p>
+					</a>
+				</div>
+				<div class="text-center">
+					<a href="{{ path('product_index', {'_locale': 'en'}) }}" class="text-decoration-none">
+						<img src="{{ asset('images/en.png') }}" alt="English (EN)" class="flag-icon">
+						<p class="mt-2">Products in English</p>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<h1>{{ current_locale == 'fr' ? 'Bienvenue' : 'Welcome' }}</h1>
+	</div>
+{% endblock %}

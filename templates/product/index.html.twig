@@ -1,60 +1,30 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{% if app.request.locale == 'fr' %}
-		Liste des produits
-	{% else %}
-		Products list
-	{% endif %}
+	{{ current_locale == 'fr' ? 'Liste des produits' : 'Products List' }}
 {% endblock %}
 
 {% block body %}
 	<div class="row">
 		<div class="col-md-12">
-			<h2>
-				{% if app.request.locale == 'fr' %}
-					Liste des produits et leurs catégories
-				{% else %}
-					List of products and their categories
-				{% endif %}
-			</h2>
+			<h2>{{ current_locale == 'fr' ? 'Liste des produits' : 'List of Products' }}</h2>
 
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th>
-							{% if app.request.locale == 'fr' %}
-								Produit
-							{% else %}
-								Product
-							{% endif %}
-						</th>
-						<th>
-							{% if app.request.locale == 'fr' %}
-								Catégorie
-							{% else %}
-								Category
-							{% endif %}
-						</th>
+						<th>{{ current_locale == 'fr' ? 'Produit' : 'Product' }}</th>
+						<th>{{ current_locale == 'fr' ? 'Catégorie' : 'Category' }}</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for product in products %}
 						<tr>
-							<td>
-								{% if app.request.locale == 'fr' %}
-									{{ product.nameFr }}
-								{% else %}
-									{{ product.nameEn }}
-								{% endif %}
-							</td>
-							<td>
-								{% if app.request.locale == 'fr' %}
-									{{ product.category.titleFr }}
-								{% else %}
-									{{ product.category.titleEn }}
-								{% endif %}
-							</td>
+							<td>{{ current_locale == 'fr' ? product.nameFr : product.nameEn }}</td>
+							<td>{{ current_locale == 'fr' ? product.category.titleFr : product.category.titleEn }}</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="2">{{ current_locale == 'fr' ? 'Aucun produit trouvé' : 'No products found' }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>
