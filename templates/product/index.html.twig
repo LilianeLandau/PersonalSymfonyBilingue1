@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{% if app.request.locale == 'fr' %}
+		Liste des produits
+	{% else %}
+		Products list
+	{% endif %}
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-md-12">
+			<h2>
+				{% if app.request.locale == 'fr' %}
+					Liste des produits et leurs catégories
+				{% else %}
+					List of products and their categories
+				{% endif %}
+			</h2>
+
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>
+							{% if app.request.locale == 'fr' %}
+								Produit
+							{% else %}
+								Product
+							{% endif %}
+						</th>
+						<th>
+							{% if app.request.locale == 'fr' %}
+								Catégorie
+							{% else %}
+								Category
+							{% endif %}
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for product in products %}
+						<tr>
+							<td>
+								{% if app.request.locale == 'fr' %}
+									{{ product.nameFr }}
+								{% else %}
+									{{ product.nameEn }}
+								{% endif %}
+							</td>
+							<td>
+								{% if app.request.locale == 'fr' %}
+									{{ product.category.titleFr }}
+								{% else %}
+									{{ product.category.titleEn }}
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
