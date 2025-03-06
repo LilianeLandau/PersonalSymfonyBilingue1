@@ -7,7 +7,13 @@
 {% block body %}
 	<div class="row">
 		<div class="col-md-12">
-			<h2>{{ current_locale == 'fr' ? 'Liste des produits' : 'List of Products' }}</h2>
+
+			{% if current_locale == 'fr' %}
+				<h2>Liste des produits</h2>
+			{% else %}
+				<h2>List of Products</h2>
+			{% endif %}
+
 
 			<table class="table table-striped">
 				<thead>
@@ -31,4 +37,18 @@
 			</table>
 		</div>
 	</div>
+
+
+	{# Ajout des liens de navigation pour les produits #}
+	{# 'product_index' correspond au nom donné à la route dans le contrôleur Symfony #}
+	{# {'_locale': 'fr'} passe le paramètre _locale avec la valeur 'fr'.#}
+	{# Symfony utilise ce paramètre pour générer l'URL correcte, par exemple /fr/product#}
+		<div class="mb-4"> <a href="{{ path('product_index', {'_locale': 'fr'}) }}" class="btn btn-outline-primary me-2">
+			Voir les produits en français
+		</a>
+		<a href="{{ path('product_index', {'_locale': 'en'}) }}" class="btn btn-outline-primary">
+			View products in English
+		</a>
+	</div>
+
 {% endblock %}

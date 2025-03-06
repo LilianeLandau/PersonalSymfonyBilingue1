@@ -1,0 +1,78 @@
+{# Étend le template de base fourni par EasyAdmin pour les pages personnalisées #}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{# Bloc qui définit le titre de la page (affiché en haut de la page d'administration) #}
+{% block content_title %}
+	Bienvenue dans l'espace d'administration du site Bilingue1
+{% endblock %}
+
+{# Bloc principal où le contenu spécifique de la page est défini #}
+{% block main %}
+	{# Section principale avec un style de "jumbotron" pour mettre en avant le tableau de bord #}
+	<div class="jumbotron">
+		<h1>Tableau de bord</h1>
+		<p>Utilisez le menu de gauche pour naviguer entre les différentes sections.</p>
+	</div>
+
+	{# Une rangée (row) Bootstrap pour afficher des cartes alignées horizontalement #}
+	<div
+		class="row mt-4">
+		{# Première colonne : Carte pour gérer les catégories #}
+		<div class="col-md-4">
+			<div
+				class="card">
+				{# En-tête de la carte avec un style et une icône #}
+				<div class="card-header bg-primary text-white">
+					<i class="fas fa-tags mr-2"></i>
+					Catégories
+				</div>
+				{# Corps de la carte avec une description et un bouton d'action #}
+				<div class="card-body">
+					<p>Gérer les catégories de produits</p>
+					{# Lien vers le CRUD des catégories en utilisant la fonction ea_url() d'EasyAdmin #}
+					<a href="{{ ea_url().setController('App\\Controller\\Admin\\CategoryCrudController').setAction('index') }}" class="btn btn-primary">Voir les catégories</a>
+				</div>
+			</div>
+		</div>
+
+		{# Deuxième colonne : Carte pour gérer les produits #}
+		<div class="col-md-4">
+			<div
+				class="card">
+				{# En-tête de la carte avec un style et une icône #}
+				<div class="card-header bg-success text-white">
+					<i class="fas fa-box mr-2"></i>
+					Produits
+				</div>
+				{# Corps de la carte avec une description et un bouton d'action #}
+				<div class="card-body">
+					<p>Gérer les produits du catalogue</p>
+					{# Lien vers le CRUD des produits en utilisant la fonction ea_url() d'EasyAdmin #}
+					<a href="{{ ea_url().setController('App\\Controller\\Admin\\ProductCrudController').setAction('index') }}" class="btn btn-success">Voir les produits</a>
+				</div>
+			</div>
+		</div>
+
+		{# Vérification si l'utilisateur a le rôle ROLE_ADMIN avant d'afficher cette section #}
+		{% if is_granted('ROLE_ADMIN') %}
+			{# Troisième colonne : Carte pour gérer les utilisateurs (visible uniquement pour les administrateurs) #}
+			<div class="col-md-4">
+				<div
+					class="card">
+					{# En-tête de la carte avec un style et une icône #}
+					<div class="card-header bg-warning text-dark">
+						<i class="fas fa-users mr-2"></i>
+						Utilisateurs
+					</div>
+					{# Corps de la carte avec une description et un bouton d'action #}
+					<div class="card-body">
+						<p>Gérer les utilisateurs</p>
+						{# Lien vers le CRUD des utilisateurs en utilisant la fonction ea_url() d'EasyAdmin #}
+						<a href="{{ ea_url().setController('App\\Controller\\Admin\\UserCrudController').setAction('index') }}" class="btn btn-warning">Voir les utilisateurs</a>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+	<!-- Fin de la rangée -->
+{% endblock %}
