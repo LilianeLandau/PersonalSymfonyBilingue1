@@ -1,31 +1,5 @@
 <?php
-/*
-namespace App\Controller\Admin;
-
-use App\Entity\Product;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-
-class ProductCrudController extends AbstractCrudController
-{
-    public static function getEntityFqcn(): string
-    {
-        return Product::class;
-    }
-
-    /*
-    public function configureFields(string $pageName): iterable
-    {
-        return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
-    }
-    
-}*/
+// src/Controller/Admin/ProductCrudController.php
 
 namespace App\Controller\Admin;
 
@@ -37,25 +11,23 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
-//use Symfony\Component\Security\Core\Security;
-use Symfony\Bundle\SecurityBundle\Security;
 
-
+/**
+ * Contrôleur CRUD pour la gestion des produits
+ */
 class ProductCrudController extends AbstractCrudController
 {
-    private Security $security;
-
-    public function __construct(Security $security)
-    {
-        $this->security = $security;
-    }
-
+    /**
+     * Retourne la classe de l'entité gérée
+     */
     public static function getEntityFqcn(): string
     {
         return Product::class;
     }
 
+    /**
+     * Configuration du CRUD
+     */
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
@@ -63,58 +35,35 @@ class ProductCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('Produits')
             ->setPageTitle('index', 'Liste des produits')
             ->setPageTitle('new', 'Créer un produit')
-            ->setPageTitle('edit', 'Modifier un produit')
+            ->setPageTitle('edit', 'Modifier le produit')
             ->setPageTitle('detail', 'Détails du produit')
             ->setDefaultSort(['id' => 'DESC']);
     }
 
+    /**
+     * Configuration des champs du formulaire
+     */
     public function configureFields(string $pageName): iterable
     {
-        yield IdField::new('id')
-            ->hideOnForm();
-
-        yield TextField::new('nameFr')
-            ->setLabel('Nom (Français)');
-
-        yield TextField::new('nameEn')
-            ->setLabel('Nom (Anglais)');
-
-        // Champ pour la catégorie avec un menu déroulant
-        yield AssociationField::new('category')
-            ->setLabel('Catégorie')
-            ->setFormTypeOption('choice_label', function ($category) {
-                return $category->getTitleFr() . ' / ' . $category->getTitleEn();
-            });
+        return [
+            IdField::new('id')->hideOnForm(),
+            TextField::new('nameFr', 'Nom (Français)'),
+            TextField::new('nameEn', 'Nom (Anglais)'),
+            AssociationField::new('category', 'Catégorie')
+                ->setFormTypeOption('placeholder', 'Sélectionnez une catégorie')
+                ->setRequired(true)
+        ];
     }
 
-    public function configureFilters(Filters $filters): Filters
-    {
-        return $filters
-            ->add('nameFr')
-            ->add('nameEn')
-            ->add('category');
-    }
-
+    /**
+     * Configuration des actions
+     */
     public function configureActions(Actions $actions): Actions
     {
-        $actions = $actions
+        return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
-                return $action->setIcon('fa fa-plus')->setLabel('Ajouter un produit');
-            })
-            ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
-                return $action->setIcon('fa fa-edit')->setLabel('Modifier');
+                return $action->setLabel('Ajouter un produit');
             });
-
-        // Si l'utilisateur n'est pas ADMIN, désactiver l'action DELETE
-        if (!$this->security->isGranted('ROLE_ADMIN')) {
-            $actions->disable(Action::DELETE);
-        } else {
-            $actions->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
-                return $action->setIcon('fa fa-trash')->setLabel('Supprimer');
-            });
-        }
-
-        return $actions;
     }
 }

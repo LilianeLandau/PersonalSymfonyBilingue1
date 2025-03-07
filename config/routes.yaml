@@ -9,6 +9,6 @@ controllers:
         en: /en
 
 default_route:
-    path: /
-    controller: App\Controller\ProductController::home
+   path: /
+   controller: App\Controller\ProductController::home
 

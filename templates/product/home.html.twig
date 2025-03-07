@@ -21,4 +21,11 @@
 			</div>
 		</div>
 	</div>
-{% endblock %}
+
+	<!-- Lien vers la page de connexion -->
+	<div class="text-center mt-4">
+		<a href="{{ path(current_locale == 'fr' ? 'app_login' : 'app_login') }}" class="btn btn-primary">
+			{{ current_locale == 'fr' ? 'Se connecter' : 'Log in' }}
+		</a>
+	</div>
+</div>{% endblock %}

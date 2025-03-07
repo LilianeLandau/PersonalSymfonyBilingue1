@@ -62,6 +62,21 @@ class Category
     }
 
     /**
+     * Retourne le nom de la catégorie comme représentation textuelle
+     */
+    public function __toString(): string
+    {
+        return $this->titleFr ?? 'Catégorie sans nom';
+    }
+
+
+
+
+
+
+
+
+    /**
      * @return Collection<int, Product>
      */
     public function getProducts(): Collection
